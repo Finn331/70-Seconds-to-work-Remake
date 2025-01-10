@@ -8,12 +8,15 @@ public class PlayerInteraction : MonoBehaviour
     public float playerReach = 2f;
     Interactable currentInteractable;
 
+    public bool getKey = false;
+
     // Update is called once per frame
     void Update()
     {
         CheckInteraction();
         if (Input.GetKeyDown(KeyCode.Mouse0) && currentInteractable != null)
         {
+            Debug.Log("Interacting with: " + currentInteractable.gameObject.name);
             currentInteractable.Interact();
         }
     }
