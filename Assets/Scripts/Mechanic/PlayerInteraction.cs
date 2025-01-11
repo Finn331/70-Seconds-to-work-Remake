@@ -7,6 +7,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     public float playerReach = 2f;
     Interactable currentInteractable;
+    public KeyCode pickKey = KeyCode.F;
 
     public bool getKey = false;
 
@@ -14,7 +15,7 @@ public class PlayerInteraction : MonoBehaviour
     void Update()
     {
         CheckInteraction();
-        if (Input.GetKeyDown(KeyCode.Mouse0) && currentInteractable != null)
+        if (Input.GetKeyDown(pickKey) && currentInteractable != null)
         {
             Debug.Log("Interacting with: " + currentInteractable.gameObject.name);
             currentInteractable.Interact();
