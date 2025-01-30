@@ -7,6 +7,8 @@ public class HUDController : MonoBehaviour
 {
     public static HUDController instance;
     PlayerInteraction playerInteraction;
+    public TMP_Text text;
+    public GameObject objectText;
 
     private void Awake()
     {
@@ -29,5 +31,16 @@ public class HUDController : MonoBehaviour
     public void DisableInteractionText()
     {
         interactionText.gameObject.SetActive(false);
+    }
+
+    IEnumerator Text()
+    {
+        yield return new WaitForSeconds(2);
+        objectText.SetActive(false);
+    }
+
+    public void ShowTextt()
+    {
+        StartCoroutine(Text());
     }
 }
