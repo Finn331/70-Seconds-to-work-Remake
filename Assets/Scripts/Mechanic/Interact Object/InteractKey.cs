@@ -14,8 +14,8 @@ public class InteractKey : MonoBehaviour
     }
     public void GetKey()
     {
+        UIKey.SetActive(true);
         Destroy(gameObject);
         playerInteraction.getKey = true;
-        UIKey.SetActive(true);
     }
 }
