@@ -12,7 +12,7 @@ public class EnemyAI : MonoBehaviour
 
     private int currentPatrolIndex;
     private NavMeshAgent agent;
-    private bool isChasing = false;
+    [SerializeField] bool isChasing = false;
 
     void Start()
     {
@@ -22,27 +22,33 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        if (isChasing)
+        if (CanSeePlayer())
         {
-            if (CanSeePlayer())
+            Debug.Log("AI SEHARUSNYA MENGEJAR PEMAIN!");
+            if (!isChasing)
             {
-                agent.SetDestination(player.position);
+                isChasing = true;
+                Debug.Log("AI mulai mengejar pemain!");
             }
-            else
-            {
-                isChasing = false;
-                GoToNextPatrolPoint();
-            }
+
+            agent.SetDestination(player.position);
         }
         else
         {
-            Patrol();
-            if (CanSeePlayer())
+            if (isChasing)
             {
-                isChasing = true;
+                isChasing = false;
+                Debug.Log("AI kehilangan pemain, kembali patroli.");
+                GoToNextPatrolPoint();
+            }
+            else
+            {
+                Patrol();
             }
         }
     }
+
+
 
     void Patrol()
     {
@@ -63,18 +69,44 @@ public class EnemyAI : MonoBehaviour
     {
         Vector3 directionToPlayer = (player.position - transform.position).normalized;
         float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
+        Vector3 rayOrigin = transform.position + Vector3.up * 1.5f; // Mulai raycast dari posisi lebih tinggi (kepala AI)
 
+        // Debug garis untuk melihat jalur raycast di Scene
+        Debug.DrawRay(rayOrigin, directionToPlayer * raycastDistance, Color.red);
+
+        // Cek apakah pemain berada dalam Field of View (FOV)
         if (angleToPlayer < fieldOfView / 2)
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, directionToPlayer, out hit, raycastDistance, ~obstacleMask))
+            if (Physics.Raycast(rayOrigin, directionToPlayer, out hit, raycastDistance, ~obstacleMask))
             {
-                if (hit.transform == player)
+                Debug.Log("Raycast terkena: " + hit.transform.name);
+
+                // Cek apakah objek yang terkena raycast memiliki tag "Player"
+                if (hit.transform.CompareTag("Player"))
                 {
+                    Debug.DrawRay(rayOrigin, directionToPlayer * raycastDistance, Color.green); // Jika mendeteksi player, ubah warna ray ke hijau
+                    Debug.Log("Pemain TERDETEKSI oleh AI!");
                     return true;
                 }
+                else
+                {
+                    Debug.Log("AI melihat sesuatu yang lain: " + hit.transform.name);
+                }
+            }
+            else
+            {
+                Debug.Log("Raycast tidak mengenai apa pun.");
             }
         }
+        else
+        {
+            Debug.Log("Pemain di luar jangkauan FOV.");
+        }
+
         return false;
     }
+
+
+
 }
