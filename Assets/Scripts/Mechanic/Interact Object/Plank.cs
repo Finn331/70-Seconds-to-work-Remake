@@ -6,14 +6,14 @@ public class Plank : MonoBehaviour
 {
     private Rigidbody rb;
     PickupObject pickupObject;
-    HUDController hUDController;
+    // HUDController hUDController;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         pickupObject = FindObjectOfType<PickupObject>();
-        hUDController = FindObjectOfType<HUDController>();
+        // hUDController = FindObjectOfType<HUDController>();
     }
 
     // Update is called once per frame
@@ -31,15 +31,15 @@ public class Plank : MonoBehaviour
         else
         {
             ShowText();
-            hUDController.text.text = "Need Something";
+            HUDController.instance.infoText.text = "Need Something";
             Debug.Log("Butuh Sesuatu");
         }
     }
 
     private void ShowText()
     {
-        hUDController.objectText.SetActive(true);
-        hUDController.ShowTextt();
+        HUDController.instance.objectInfoText.SetActive(true);
+        HUDController.instance.ShowTextt();
     }
 
     private void OnCollisionEnter(Collision other)

@@ -132,6 +132,11 @@ public class FirstPersonController : MonoBehaviour
 
     #endregion
 
+    #region Sound Variables
+    public AudioClip walkStep, runStep;
+    public AudioSource audioSource;
+    #endregion
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -401,6 +406,7 @@ public class FirstPersonController : MonoBehaviour
             // Will allow head bob
             if (targetVelocity.x != 0 || targetVelocity.z != 0 && isGrounded)
             {
+
                 isWalking = true;
             }
             else
@@ -461,6 +467,8 @@ public class FirstPersonController : MonoBehaviour
                 rb.AddForce(velocityChange, ForceMode.VelocityChange);
             }
         }
+
+        UpdateFootstepSound();
 
         #endregion
     }
@@ -550,6 +558,43 @@ public class FirstPersonController : MonoBehaviour
             joint.localPosition = new Vector3(Mathf.Lerp(joint.localPosition.x, jointOriginalPos.x, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.y, jointOriginalPos.y, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.z, jointOriginalPos.z, Time.deltaTime * bobSpeed));
         }
     }
+
+    #region Sound Footstep Logic
+
+    private void UpdateFootstepSound()
+    {
+        // Cek apakah player sedang bergerak (minimal sedikit input horizontal atau vertical)
+        bool isMoving = Mathf.Abs(Input.GetAxis("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxis("Vertical")) > 0.1f;
+
+        if (isGrounded && isMoving)
+        {
+            AudioClip targetClip = isSprinting ? runStep : walkStep;
+
+            // Ganti clip hanya jika berbeda
+            if (audioSource.clip != targetClip)
+            {
+                audioSource.Stop();
+                audioSource.clip = targetClip;
+                audioSource.loop = true;
+            }
+
+            // Pastikan audio selalu diputar jika tidak sedang bermain
+            if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
+        }
+        else
+        {
+            // Jika tidak bergerak atau tidak grounded, hentikan audio
+            if (audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
+        }
+    }
+
+    #endregion
 }
 
 
@@ -753,6 +798,16 @@ public class FirstPersonControllerEditor : Editor
         GUI.enabled = true;
 
         #endregion
+
+
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+        GUILayout.Label("Sound Setup", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, fontSize = 13 }, GUILayout.ExpandWidth(true));
+        EditorGUILayout.Space();
+        fpc.walkStep = (AudioClip)EditorGUILayout.ObjectField(new GUIContent("Walk Sound", "Suara ketika player sedang jalan."), fpc.walkStep, typeof(AudioClip), true);
+        fpc.runStep = (AudioClip)EditorGUILayout.ObjectField(new GUIContent("Run Sound", "Suara ketika player sedang berlari."), fpc.runStep, typeof(AudioClip), true);
+        fpc.audioSource = (AudioSource)EditorGUILayout.ObjectField(new GUIContent("Setup Audio Source", "Setting Audio Source nya."), fpc.audioSource, typeof(AudioSource), true);
+
 
         //Sets any changes from the prefab
         if (GUI.changed)

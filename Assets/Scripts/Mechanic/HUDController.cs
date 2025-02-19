@@ -7,8 +7,10 @@ public class HUDController : MonoBehaviour
 {
     public static HUDController instance;
     PlayerInteraction playerInteraction;
-    public TMP_Text text;
-    public GameObject objectText;
+    public TMP_Text infoText;
+    public GameObject objectInfoText;
+
+    public GameObject UIPoisonMark;
 
     private void Awake()
     {
@@ -18,25 +20,26 @@ public class HUDController : MonoBehaviour
     private void Start()
     {
         playerInteraction = FindObjectOfType<PlayerInteraction>();
+        UIPoisonMark.SetActive(false);
     }
 
-    [SerializeField] TMP_Text interactionText;
+    [SerializeField] TMP_Text interactionObjectText;
 
     public void EnableInteractionText(string text)
     {
-        interactionText.text = text + (" ") + playerInteraction.pickKey;
-        interactionText.gameObject.SetActive(true);
+        interactionObjectText.text = text + (" ") + playerInteraction.pickKey;
+        interactionObjectText.gameObject.SetActive(true);
     }
 
     public void DisableInteractionText()
     {
-        interactionText.gameObject.SetActive(false);
+        interactionObjectText.gameObject.SetActive(false);
     }
 
     IEnumerator Text()
     {
         yield return new WaitForSeconds(2);
-        objectText.SetActive(false);
+        objectInfoText.SetActive(false);
     }
 
     public void ShowTextt()

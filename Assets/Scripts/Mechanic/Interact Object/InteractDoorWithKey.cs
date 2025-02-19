@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InteractDoorWithKey : MonoBehaviour
 {
-    HUDController hUDController;
+    // HUDController hUDController;
     public GameObject UIKey;
     //tambahin aja bool nya kalo pintu nya nambah
     public bool doorKeyA, doorKeyB, doorKeyC, doorkeyD = false;
@@ -16,7 +16,7 @@ public class InteractDoorWithKey : MonoBehaviour
     void Start()
     {
         playerInteraction = FindObjectOfType<PlayerInteraction>();
-        hUDController = FindObjectOfType<HUDController>();
+        // hUDController = FindObjectOfType<HUDController>();
         anim = GetComponent<Animator>();
         door = false;
     }
@@ -60,15 +60,15 @@ public class InteractDoorWithKey : MonoBehaviour
         else
         {
             ShowText();
-            hUDController.text.text = "Need a Key";
+            HUDController.instance.infoText.text = "Need a Key";
             Debug.Log("Kamu Butuh Kunci");
         }
     }
 
     private void ShowText()
     {
-        hUDController.objectText.SetActive(true);
-        hUDController.ShowTextt();
+        HUDController.instance.objectInfoText.SetActive(true);
+        HUDController.instance.ShowTextt();
     }
 
 }

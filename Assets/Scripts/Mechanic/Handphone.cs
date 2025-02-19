@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System;
 
 public class Handphone : MonoBehaviour
 {
@@ -8,14 +10,19 @@ public class Handphone : MonoBehaviour
     public Vector3 backPosition;
     public RectTransform handphone;
     public float timeToMove;
-    public AudioSource audioSource;
     public AudioClip startAudio, moveAudio;
-    // public AudioClip moveAudio;
+    AudioSource audioSource;
+    public TMP_Text text;
+    [SerializeField] string startText;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+
         StartCoroutine(StartPhone());
+
+        text.enabled = false;
+        text.text = startText;
     }
 
     public void MoveToTarget()
@@ -37,14 +44,14 @@ public class Handphone : MonoBehaviour
 
     IEnumerator StartPhone()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         PlayAudio();
         StartCoroutine(MovePhone());
     }
 
     IEnumerator MovePhone()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         MoveToTarget();
         StartCoroutine(BackPosition());
     }
@@ -53,5 +60,14 @@ public class Handphone : MonoBehaviour
     {
         yield return new WaitForSeconds(4f);
         BackToTarget();
+
+        text.enabled = true;
+        StartCoroutine(Text());
+    }
+
+    IEnumerator Text()
+    {
+        yield return new WaitForSeconds(4f);
+        text.enabled = false;
     }
 }
