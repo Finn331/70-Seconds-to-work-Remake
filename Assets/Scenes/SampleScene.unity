@@ -10967,9 +10967,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20177625d5d09344faefcf59a0dd515e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 0}
-  objectText: {fileID: 0}
-  interactionText: {fileID: 325887924}
+  infoText: {fileID: 325887924}
+  objectInfoText: {fileID: 325887922}
+  UIPoisonMark: {fileID: 325887922}
+  interactionObjectText: {fileID: 325887924}
 --- !u!1 &205079589
 GameObject:
   m_ObjectHideFlags: 0
