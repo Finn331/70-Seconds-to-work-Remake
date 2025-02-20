@@ -12,10 +12,12 @@ public class InteractDoorWithKey : MonoBehaviour
     bool door = false;
     PlayerInteraction playerInteraction;
     Animator anim;
+    SoundsManager soundsManager;
 
     void Start()
     {
         playerInteraction = FindObjectOfType<PlayerInteraction>();
+        soundsManager = FindObjectOfType<SoundsManager>();
         // hUDController = FindObjectOfType<HUDController>();
         anim = GetComponent<Animator>();
         door = false;
@@ -29,10 +31,12 @@ public class InteractDoorWithKey : MonoBehaviour
             {
                 //Masing masing door buat Animator sendiri, dengan Parameter Trigger, sesuaikan dengan nama "Close" "Open"
                 anim.SetTrigger("Close");
+                soundsManager.BasementDoorSound();
             }
             else
             {
                 anim.SetTrigger("Open");
+                soundsManager.BasementDoorSound();
             }
 
             // Cek nama GameObject yang punya script ini

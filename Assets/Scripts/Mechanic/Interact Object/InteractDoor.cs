@@ -7,9 +7,11 @@ public class InteractDoor : MonoBehaviour
     private bool door = false;
     private bool isAnimating = false;
     private Animator anim;
+    SoundsManager soundsManager;
 
     void Start()
     {
+        soundsManager = FindObjectOfType<SoundsManager>();
         anim = GetComponent<Animator>();
     }
 
@@ -21,10 +23,12 @@ public class InteractDoor : MonoBehaviour
         if (door)
         {
             anim.SetTrigger("Close");
+            soundsManager.CloseDoorSound();
         }
         else
         {
             anim.SetTrigger("Open");
+            soundsManager.OpenDoorSound();
         }
         StartCoroutine(ResetAnimationState());
         door = !door;

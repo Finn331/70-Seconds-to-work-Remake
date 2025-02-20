@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Plank : MonoBehaviour
+public class Planks : MonoBehaviour
 {
     private Rigidbody rb;
     PickupObject pickupObject;
+    SoundsManager soundsManager;
     // HUDController hUDController;
 
     // Start is called before the first frame update
@@ -13,6 +14,7 @@ public class Plank : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         pickupObject = FindObjectOfType<PickupObject>();
+        soundsManager = FindObjectOfType<SoundsManager>();
         // hUDController = FindObjectOfType<HUDController>();
     }
 
@@ -27,6 +29,7 @@ public class Plank : MonoBehaviour
         if (pickupObject.objectBool)
         {
             rb.isKinematic = false;
+            soundsManager.PlankSound();
         }
         else
         {
